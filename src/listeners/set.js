@@ -38,7 +38,7 @@ module.exports = new SocketListener({
         userIds: newUserIds,
         channelId: newChannelId,
         targetUserId: socket.data.id,
-        type: "leave"
+        type: "join"
       });
     }
 

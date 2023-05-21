@@ -48,7 +48,7 @@ const PORT = Number(process.env.PORT) || 2024;
     listeners.set(socketListener.name, socketListener);
   }
   io.on("connection", (socket) => {
-    let socketIp = socket.handshake.headers["x-forwarded-for"] || socket.handshake.address;
+    let socketIp = (socket.handshake.headers["x-forwarded-for"] || socket.handshake.address)?.split(",")[0]?.trim();
     if (BLOCKED_IPS.has(socketIp)) {
       socket.disconnect(true);
       return;

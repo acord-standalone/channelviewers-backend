@@ -1,9 +1,9 @@
 const SocketListener = require("../SocketListener.js");
-const aaq = require("async-and-quick");
 const redis = require("../redis/index.js");
 const ftSearch = require("../utils/ftSearch.js");
 const echoSocket = require("../echoSocket.js");
 
+// FT.CREATE CVUsers ON JSON PREFIX 1 CV:Users: SCHEMA $.channelId AS channelId TAG
 
 module.exports = new SocketListener({
   name: "set",
@@ -41,5 +41,8 @@ module.exports = new SocketListener({
         type: "leave"
       });
     }
+
+    let result = await ftSearch("CVUsers", `@channelId:{${data[0]}}`, 1000);
+    return result.documents.map(i => i.value.userId);
   }
 })

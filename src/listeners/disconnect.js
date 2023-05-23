@@ -6,8 +6,7 @@ const ftSearch = require("../utils/ftSearch.js");
 module.exports = new SocketListener({
   name: "disconnect",
   async execute(socket) {
-    let senderId = socket.data.id;
-    if (!senderId) return;
+    if (!socket.data.id) return;
 
     let oldChannelId = (await redis.json.get(`CV:Users:${socket.data.id}`, "$"))?.channelId;
 
@@ -21,6 +20,8 @@ module.exports = new SocketListener({
         targetUserId: socket.data.id,
         type: "leave"
       });
+
+      redis.json.del(`CV:Users:${socket.data.id}`, "$").catch(() => { });
     }
   }
 })
